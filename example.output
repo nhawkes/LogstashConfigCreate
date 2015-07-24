@@ -1,0 +1,35 @@
+LOGSTASH DEBUG OUTPUT:
+
+{
+      "@version" => "1",
+    "@timestamp" => "2015-07-10T23:05:31.000Z",
+          "host" => "vm173.nubes.stfc.ac.uk",
+          "path" => "/home/nathan/LogstashConfigCreate/example.log",
+     "free_swap" => 100,
+     "total_mem" => 8193,
+          "tags" => [
+        [0] "process_check_result"
+    ]
+}
+{
+      "@version" => "1",
+    "@timestamp" => "2015-07-10T23:07:12.000Z",
+          "host" => "vm173.nubes.stfc.ac.uk",
+          "path" => "/home/nathan/LogstashConfigCreate/example.log",
+      "hostname" => "node4",
+          "tags" => [
+        [0] "service_check"
+    ]
+}
+{
+      "@version" => "1",
+    "@timestamp" => "2015-07-12T06:31:40.000Z",
+          "host" => "vm173.nubes.stfc.ac.uk",
+          "path" => "/home/nathan/LogstashConfigCreate/example.log",
+      "hostname" => "node2",
+          "tags" => [
+        [0] "host_down"
+    ],
+            "ip" => "64.233.191.255"
+}
+
