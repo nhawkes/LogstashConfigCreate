@@ -7,7 +7,7 @@ gem jls-grok 0.11.2
 
 ##User Instructions
 This program generates a file from a series of branches, each containing various filters.   
-Run `ruby main.rb YOURLOGFILE` to start the step by step   
+Run `ruby main.rb YOURLOGFILE` to run the program   
 The program follows a hierarchical structure where typeing 'next' will usually take you back.     
 
 Logfiles are represented in a similar manner to probability trees.
