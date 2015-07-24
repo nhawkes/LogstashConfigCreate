@@ -38,7 +38,7 @@ This could be represented as:
                                                                 |- ;DOWN;HARD;1;CRITICAL - Host Unreachable ({IPADDRESS})  
 
 
-The program helps you to construct something similar to this for a log and then converts it to a logstash json output.  
+The program helps you to construct something similar to this for a log and then outputs a logstash config for json output.  
   
   For each branch a number of filters are supported. Currently the program includes grok, drop, timestamp and convert:  
 * **Grok** takes text and captures variables within it. It is built on top of regular expressions  
