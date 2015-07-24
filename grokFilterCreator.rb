@@ -73,7 +73,7 @@ class GrokPatternCreator < Creator
         @variable_names = []
         @creating = parent
         @grokguess = GrokGuess.new(grok)
-        @creating.pattern = line
+        @creating.pattern = Regexp.escape(line).gsub("\\ "," ").gsub("\\.",".").gsub("\\-","-")
         @lines = lines.each_with_index.take(1000)
     end
     def displayOptions
@@ -164,11 +164,13 @@ class GrokPatternCreator < Creator
             end
         end
 
-        array = input.split
-        array = array.map{|x| x.to_i}
-        if array.length == 2
-            variable_start = array[0]
-            variable_end = array[1]
+        if ! input =~ /[.'"\/]/
+            array = input.split
+            array = array.map{|x| x.to_i}
+            if array.length == 2
+                variable_start = array[0]
+                variable_end = array[1]
+            end
         end
 
         if variable_start >= min_start && variable_start <= variable_end && variable_end <= max_end

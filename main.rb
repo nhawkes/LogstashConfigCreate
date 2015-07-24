@@ -3,7 +3,8 @@ require_relative 'treeCreators'
 lines = []
 if !ARGV[0]
     puts 'No logfile specified'
-    puts 'e.g: ruby main.rb logfile.log'
+    puts ''
+    puts 'Command synopsis: ruby main.rb [logfile.log]'
     exit
 end
 

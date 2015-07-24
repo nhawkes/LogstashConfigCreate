@@ -4,6 +4,7 @@ require_relative 'grokguess'
 require_relative 'filterCreators'
 require "grok-pure"
 
+
 def prompt()
     print "==>"
     input = $stdin.readline.strip

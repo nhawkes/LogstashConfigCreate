@@ -53,7 +53,15 @@ class Root < Creatable
         @branches = []
     end
     def unhandledLines(exclude = nil)
-        return @outputLines
+        return @outputLines.reject{|line| self.handles?(line, exclude) }
+    end
+    def handles?(line, exclude = nil)
+        for branch in @branches.reject{|x| x == exclude}
+            if branch.grok.matches(line)
+                return true
+            end
+        end
+        return false
     end
     def writeOutput()
         writer = CodeWriter.new
@@ -168,7 +176,7 @@ class Branch < Creatable
         writer.reset
     end
     def outputLines
-        return @parent.outputLines.map{|line| @grok.matches(line)}.map{|captures| if captures; captures["GREEDYDATA:message"] end }.compact
+        return @parent.outputLines.map{|line| @grok.matches(line)}.map{|captures| if captures; captures["message"] end }.compact
     end
     def unhandledLines(exclude = nil)
         return self.outputLines.reject{|line| self.handles?(line, exclude) }

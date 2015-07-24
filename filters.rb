@@ -67,7 +67,7 @@ class GrokFilter < Filter
         writer.write(match + tag + "    [#{percentHandled}%]")
     end
     def pattern=(pattern)
-        @pattern = Regexp.escape(pattern).gsub("\\ "," ").gsub("\\.",".").gsub("\\-","-")
+        @pattern = pattern
         @grok.compile(@pattern)
         @keys = []
     end
@@ -77,11 +77,17 @@ class GrokFilter < Filter
                 @grok.compile(@pattern)
                 match = @grok.match(line.strip)
                 if match
-                    if match.match.names.count > 0
-                        @keys = match.match.names
-                    end
-                    captures = Hash[match.match.names.zip(match.match.captures)]
+                    captures = {}
+                    match.match.regexp.named_captures.each {|name, indexes|
+                        if name.include? ":"
+                            shortname = name.gsub(/(.*):/,"")
+                            captures[shortname] =  match.match.captures[indexes[0]-1]
+                        end
+                    }
                     @lastCaptures = captures
+                    if captures.keys.count > 0
+                        @keys = captures.keys
+                    end
                     return captures
                 end
             end
@@ -91,7 +97,7 @@ class GrokFilter < Filter
         return nil
     end
     def can_branch?
-        @keys.include? 'GREEDYDATA:message'
+        @keys.include? 'message'
     end
 end
 class DropFilter < Filter
