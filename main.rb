@@ -1,3 +1,11 @@
+#Project structure:
+#
+# => tree.rb contains code to store the tree structure and to write it out as a logstash config or tree structure. filters.rb contains the filters for a branch
+# => Everthing has a command line interface provided by its creator. Creators call other creators to build up structure. treeCreators.rb contains the creators for roots and branches, filterCreators.rb (and grokFilterCreator) contains the interface to create filters.
+# => grokguess.rb provides the pattern discovery for grok
+
+
+
 require 'json'
 require_relative 'treeCreators'
 lines = []
