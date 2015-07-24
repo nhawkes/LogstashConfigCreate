@@ -50,4 +50,18 @@ For the log above you would create a *grok* tree similar to the structure above,
 you would probably *drop* all messages in the `UP;HARD;1;PING OK` branch as they aren't very useful,
 use *timestamp* to convert the UNIX timestamp into the timestamp field
 and then use *convert* to change `{FREESWAP}` and `{TOTAL MEM}` into integers
-  
+
+In the program the structure would look like this:
+```  
+        ->\[%{BASE10NUM:timestamp}\] {{...}}    [100.0%]
+        Set timestamp from timestamp
+            ->PROCESS_SERVICE_CHECK_RESULT: SWAP %{NUMBER:percent_swap_free}% free \(out of %{NUMBER:total_swap} MB\)  (swap_check)    [20.0%]
+            Convert type(s): total_swap, percent_swap_free
+            ->PASSIVE SERVICE CHECK: %{HOSTNAME:hostname};{{...}}  (passive_check)    [20.0%]
+            ->CURRENT HOST STATE: %{HOSTNAME:hostname};{{...}}  (host_state)    [60.0%]
+                ->UP;HARD;1;PING OK - Packet loss = %{NUMBER:packet_loss}%, RTA = %{NUMBER:rta} ms  (host_up)    [40.0%]
+                  IGNORE MESSAGE
+                ->DOWN;HARD;1;CRITICAL - Host Unreachable \(%{IP:ip}\)  (host_down)    [20.0%]
+                
+```
+(Output configuration for this can be found in examplelog.conf)
