@@ -7,7 +7,7 @@ gem jls-grok 0.11.2
 
 ##User Instructions
 This program generates a file from a series of branches, each containing various filters.   
-Run `ruby main.rb YOURLOGFILE` to start the step by step   
+Run `ruby main.rb YOURLOGFILE` to run the program   
 The program follows a hierarchical structure where typeing 'next' will usually take you back.     
 
 Logfiles are represented in a similar manner to probability trees.
@@ -40,7 +40,7 @@ This could be represented as:
 
 The program helps you to construct something similar to this for a log and then converts it to a logstash json output.  
   
-  For each branch a number of filters are supported. Currently it includes grok, drop, timestamp and convert  
+  For each branch a number of filters are supported. Currently the program includes grok, drop, timestamp and convert:  
 * **Grok** takes text and captures variables within it. It is built on top of regular expressions  
 * **Drop** simple tells logstash to ignore everything that gets to that branch and not output the message  
 * **Timestamp** allows you to change the default timestamp of the message (set to when Logstash discovers a message) to when the log message was actually generated 
@@ -49,5 +49,19 @@ The program helps you to construct something similar to this for a log and then 
 For the log above you would create a *grok* tree similar to the structure above, 
 you would probably *drop* all messages in the `UP;HARD;1;PING OK` branch as they aren't very useful,
 use *timestamp* to convert the UNIX timestamp into the timestamp field
-and then use *convert* to change `{FREESWAP}` and `{TOTAL MEM}` into integers
-  
+and then use *convert* to change `{FREESWAP}` and `{TOTAL MEM}` into integers.
+
+In the program the structure would look like this:
+```  
+        ->\[%{BASE10NUM:timestamp}\] {{...}}    [100.0%]
+        Set timestamp from timestamp
+            ->PROCESS_SERVICE_CHECK_RESULT: SWAP %{NUMBER:percent_swap_free}% free \(out of %{NUMBER:total_swap} MB\)  (swap_check)    [20.0%]
+            Convert type(s): total_swap, percent_swap_free
+            ->PASSIVE SERVICE CHECK: %{HOSTNAME:hostname};{{...}}  (passive_check)    [20.0%]
+            ->CURRENT HOST STATE: %{HOSTNAME:hostname};{{...}}  (host_state)    [60.0%]
+                ->UP;HARD;1;PING OK - Packet loss = %{NUMBER:packet_loss}%, RTA = %{NUMBER:rta} ms  (host_up)    [40.0%]
+                  IGNORE MESSAGE
+                ->DOWN;HARD;1;CRITICAL - Host Unreachable \(%{IP:ip}\)  (host_down)    [20.0%]
+                
+```
+(Output configuration for this can be found in examplelog.conf)
