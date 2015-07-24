@@ -40,7 +40,7 @@ This could be represented as:
 
 The program helps you to construct something similar to this for a log and then converts it to a logstash json output.  
   
-  For each branch a number of filters are supported. Currently it includes grok, drop, timestamp and convert  
+  For each branch a number of filters are supported. Currently the program includes grok, drop, timestamp and convert:  
 * **Grok** takes text and captures variables within it. It is built on top of regular expressions  
 * **Drop** simple tells logstash to ignore everything that gets to that branch and not output the message  
 * **Timestamp** allows you to change the default timestamp of the message (set to when Logstash discovers a message) to when the log message was actually generated 
@@ -49,7 +49,7 @@ The program helps you to construct something similar to this for a log and then 
 For the log above you would create a *grok* tree similar to the structure above, 
 you would probably *drop* all messages in the `UP;HARD;1;PING OK` branch as they aren't very useful,
 use *timestamp* to convert the UNIX timestamp into the timestamp field
-and then use *convert* to change `{FREESWAP}` and `{TOTAL MEM}` into integers
+and then use *convert* to change `{FREESWAP}` and `{TOTAL MEM}` into integers.
 
 In the program the structure would look like this:
 ```  
