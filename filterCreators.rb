@@ -141,7 +141,7 @@ class DateCreator < Creator
 
             fieldKey = nil
             for key in @grokFilter.keys
-                if key.end_with? ':' + @field
+                if key == @field
                     fieldKey = key
                 end
             end
@@ -150,8 +150,6 @@ class DateCreator < Creator
                 puts @grokFilter.lastCaptures[fieldKey]
                 puts ''
             end
-
-
 
             @match = prompt
         end
