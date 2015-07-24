@@ -75,6 +75,7 @@ class GrokPatternCreator < Creator
         @grokguess = GrokGuess.new(grok)
         @creating.pattern = Regexp.escape(line).gsub("\\ "," ").gsub("\\.",".").gsub("\\-","-")
         @lines = lines.each_with_index.take(1000)
+        @wrap = false
     end
     def displayOptions
         matchings = @lines.map{
@@ -83,7 +84,7 @@ class GrokPatternCreator < Creator
         @creating.totalHandled = matchings.count
         puts 'Currently matching ' + matchings.count.to_s + ' out of '+ @lines.count.to_s + ' lines (type "view" to view) '
         puts ''
-        #Commented out as makes input more messy and confusing
+        #Commented out as printing numbers above the text makes input more messy and confusing
     #    charIndexes = (1..@creating.pattern.each_char.count).map{|index|
     #            mod = (index % 10)
     #            if (mod == 1 || mod == 9) && index > 5
@@ -101,6 +102,7 @@ class GrokPatternCreator < Creator
         puts @creating.pattern
         puts '----------------'
         puts '  Select section to replace with variable'
+        puts 'Type "next" to return'
         puts '  Write first index then space then second index (0 to ' + (@creating.pattern.size-1).to_s + '), type the section to be replaced or press return to use assisted selection'
     end
     def respond(input,root)
@@ -113,6 +115,9 @@ class GrokPatternCreator < Creator
                 puts @creating.matches(line)
                 puts ''
             }.compact
+        end
+        if input == 'next'
+            return true
         end
 
         variable_start = -1

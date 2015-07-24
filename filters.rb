@@ -42,6 +42,8 @@ class GrokFilter < Filter
 
         if self.can_branch?
             writer.write('overwrite => [ "message" ]')
+        else
+            writer.write('remove_field => [ "message" ]')
         end
         if @tag
             writer.write('add_tag => ["' + @tag + '"]')
@@ -101,8 +103,11 @@ class GrokFilter < Filter
     end
 end
 class DropFilter < Filter
+    attr_accessor :condition
     def writeOutput(writer)
+        @condition.writeBegin writer
         writer.write('drop {}')
+        @condition.writeEnd writer
     end
     def writeStructure(writer)
         writer.write("  IGNORE MESSAGE")

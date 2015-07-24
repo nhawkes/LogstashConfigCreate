@@ -75,7 +75,7 @@ class DropCreator < Creator
     end
     def displayOptions
         puts ''
-        puts '  Drop and ignore all messages that get to this branch? (yes/no)'
+        puts '  Drop and ignore all messages that match the grok in this branch? (yes/no)'
     end
     def respond(input,root)
         if input.start_with? 'y'

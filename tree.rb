@@ -80,8 +80,8 @@ class Root < Creatable
         writer.indent
         writer.write "file {"
         writer.indent
-        writer.write "path => '#{@filePath}'"
-        writer.write "start_position => 'beginning'"
+        writer.write 'path => "' + @filePath +'"'
+        writer.write 'start_position => "beginning"'
         writer.unindent
         writer.write "}"
         writer.unindent
@@ -140,6 +140,7 @@ class Branch < Creatable
     def writeOutput(writer)
 
         @condition.tag = @grok.tag
+        @drop.condition = @condition
 
         @grok.ifUsedWriteOutput(writer)
         @date.ifUsedWriteOutput(writer)
